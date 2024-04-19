@@ -60,60 +60,58 @@
 </head>
 <body>
     <div>
-        <form id="myform" action="#" onsubmit="return false;">
+        <form id="myform" action="register.php" method="post" onsubmit="return judge();">
             <h3>用户注册信息</h3>
             <table>
                 <tr>
                     <td>用户名*:</td>
                     <td>
-                        <input type="text" id="username" placeholder="用户名由6-10位字符组成">
+                        <input type="text" id="username" name="username" placeholder="用户名由6-10位字符组成" required>
                         <div id="nameerror" class="error"></div>
                     </td>
                 </tr>
                 <tr>
                     <td>年龄*:</td>
                     <td>
-                        <input type="text" id="age" placeholder="请输入你的年龄">
+                        <input type="text" id="age" name="age" placeholder="请输入你的年龄" required>
                         <div id="ageerror" class="error"></div>
                     </td>
                 </tr>
                 <tr>
                     <td>密码*:</td>
                     <td>
-                        <input type="password" id="psd" placeholder="请输入正确的密码">
+                        <input type="password" id="psd" name="password" placeholder="请输入正确的密码" required>
                         <div id="passworderror" class="error"></div>
                     </td>
                 </tr>
                 <tr>
                     <td>确认密码*:</td>
                     <td>
-                        <input type="password" id="againpass">
+                        <input type="password" id="againpass" name="againpass" required>
                         <div id="againerror" class="error"></div>
                     </td>
                 </tr>
                 <tr>
                     <td>电子邮件*:</td>
                     <td>
-                        <input type="text" id="email" placeholder="请输入你的邮件地址">
+                        <input type="text" id="email" name="email" placeholder="请输入你的邮件地址" required>
                         <div id="emailerror" class="error"></div>
                     </td>
                 </tr>
                 <tr>
                     <td>电话号码:</td>
                     <td>
-                        <input type="text" id="phone" placeholder="请输入你的电话号码">
+                        <input type="text" id="phone" name="phone" placeholder="请输入你的电话号码">
                         <div id="phoneerror" class="error"></div>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2"><input type="submit" value="提交" onclick="judge()"></td>
+                    <td colspan="2"><input type="submit" value="提交"></td>
                 </tr>
             </table>
         </form>
     </div>
     <script>
-        var emailok = false, againok = false, passwordok = false, ageok = false, usernameok = false, phoneok = false;
-
         function updateStatus(elementId, isValid, message) {
             var errorElement = document.getElementById(elementId);
             if (!isValid) {
@@ -125,52 +123,35 @@
             return isValid;
         }
 
-        function judgename() {
+        function judge() {
+            var emailok = false, againok = false, passwordok = false, ageok = false, usernameok = false, phoneok = false;
+            
             var name = document.getElementById("username");
-            var pattern = /^[A-Za-z0-9]{6,10}$/;
-            usernameok = updateStatus("nameerror", pattern.test(name.value), "用户格式不正确！");
-        }
+            var patternName = /^[A-Za-z0-9]{6,10}$/;
+            usernameok = updateStatus("nameerror", patternName.test(name.value), "用户格式不正确！");
 
-        function judgeage() {
             var age = document.getElementById("age");
             ageok = updateStatus("ageerror", age.value >= 18, "年龄不能小于18岁！");
-        }
 
-        function judgepassword() {
             var psd = document.getElementById("psd");
-            var pattern = /^(?=.*\d)(?=.*[!@#$%^&*]).{6,10}$/;
-            passwordok = updateStatus("passworderror", pattern.test(psd.value), "密码格式不正确或者不能为空！");
-        }
+            var patternPsd = /^(?=.*\d)(?=.*[!@#$%^&*]).{6,10}$/;
+            passwordok = updateStatus("passworderror", patternPsd.test(psd.value), "密码格式不正确或者不能为空！");
 
-        function judgeagain() {
-            var psd = document.getElementById("psd");
             var againpass = document.getElementById("againpass");
             againok = updateStatus("againerror", psd.value === againpass.value, "两次密码不一致！");
-        }
 
-        function judgeemail() {
             var email = document.getElementById("email");
-            var pattern = /^[^@]+@[^@]+\.[^@]+$/;
-            emailok = updateStatus("emailerror", pattern.test(email.value), "邮箱格式不正确！");
-        }
+            var patternEmail = /^[^@]+@[^@]+\.[^@]+$/;
+            emailok = updateStatus("emailerror", patternEmail.test(email.value), "邮箱格式不正确！");
 
-        function judgephone() {
             var phone = document.getElementById("phone");
-            phoneok = updateStatus("phoneerror", phone.value.length == 11, "电话号码必须为11位数字！");
-        }
+            phoneok = updateStatus("phoneerror", phone.value.length === 11, "电话号码必须为11位数字！");
 
-        function judge() {
-            judgename();
-            judgeage();
-            judgepassword();
-            judgeagain();
-            judgeemail();
-            judgephone();
             if (emailok && againok && passwordok && ageok && usernameok && phoneok) {
-                alert("注册成功");
-                window.location.href = '红酒品鉴页面.html'; // 修改为你的目标页面
+                return true; // 所有验证通过，表单将提交
             } else {
                 alert("注册失败，请确保所有字段均正确填写。");
+                return false; // 阻止表单提交
             }
         }
     </script>
