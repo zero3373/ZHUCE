@@ -59,8 +59,8 @@
     </style>
 </head>
 <body>
-    <div>
         <form id="myform" action="register.php" method="post" onsubmit="return judge();">
+    <div>
             <h3>用户注册信息</h3>
             <table>
                 <tr>
